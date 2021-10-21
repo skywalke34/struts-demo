@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: struts
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: struts
+  namespace: struts
+  labels:
+    app: struts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: struts
+  template:
+    metadata:
+      labels:
+        app: struts
+    spec:
+      containers:
+      - name: struts
+        image: skywalke34/struts
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: struts
+  namespace: struts
+spec:
+  type: LoadBalancer
+  selector:
+    app: struts
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: struts-8080-tcp
